@@ -43,24 +43,29 @@ def _get_supabase_admin_client() -> Client:
 
 
 def create_tables_if_not_exist():
-    """Create users and scans tables in Supabase (run once during startup)"""
-    # Note: Manually create tables in Supabase dashboard with this schema:
-    # 
-    # users table:
-    # - id (UUID, Primary Key)
-    # - email (Text, Unique)
-    # - created_at (Timestamp)
-    # 
-    # scans table:
-    # - id (UUID, Primary Key)
-    # - user_id (UUID, FK to users.id)
-    # - scan_date (Timestamp)
-    # - target_url (Text)
-    # - vulnerabilities_count (Integer)
-    # - patches_count (Integer)
-    # - file_path_vulnerabilities (Text)  # stored report JSON text for backward compatibility
-    # - file_path_patches (Text)          # stored report JSON text for backward compatibility
-    # - created_at (Timestamp)
+    """Create users and scans tables in Supabase (run once during startup)
+    CREATE TABLE public.users (
+    id uuid NOT NULL DEFAULT auth.uid(),
+    email text NOT NULL UNIQUE,
+    created_at timestamp without time zone DEFAULT now(),
+    CONSTRAINT users_pkey PRIMARY KEY (id)
+    );
+
+    CREATE TABLE public.scans (
+    id uuid NOT NULL DEFAULT gen_random_uuid(),
+    user_id uuid NOT NULL,
+    scan_id text NOT NULL,
+    target_url text NOT NULL,
+    vulnerabilities_count integer DEFAULT 0,
+    patches_count integer DEFAULT 0,
+    file_path_vulnerabilities text,
+    file_path_patches text,
+    scan_date timestamp without time zone DEFAULT now(),
+    created_at timestamp without time zone DEFAULT now(),
+    CONSTRAINT scans_pkey PRIMARY KEY (id),
+    CONSTRAINT scans_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+    );
+"""
     pass
 
 

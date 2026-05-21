@@ -27,8 +27,38 @@ const ChatCodeBlock = ({ lang, code }) => {
   );
 };
 
+const extractVulnerabilityLinks = (text) => {
+  const cves = new Set((text.match(/CVE-\d{4}-\d{4,7}/gi) || []).map((value) => value.toUpperCase()));
+  const cwes = new Set(
+    (text.match(/CWE[-\s]?\d{1,5}/gi) || []).map((value) => {
+      const id = value.replace(/CWE[-\s]?/i, "");
+      return `CWE-${id}`;
+    })
+  );
+
+  const links = [];
+  cves.forEach((cve) => {
+    links.push({
+      type: "CVE",
+      label: cve,
+      url: `https://nvd.nist.gov/vuln/detail/${cve}`,
+    });
+  });
+  cwes.forEach((cwe) => {
+    const id = cwe.split("-")[1];
+    links.push({
+      type: "CWE",
+      label: cwe,
+      url: `https://cwe.mitre.org/data/definitions/${id}.html`,
+    });
+  });
+
+  return links;
+};
+
 function ChatBubble({ role, content }) {
   const isUser = role === "user";
+  const vulnLinks = role === "assistant" ? extractVulnerabilityLinks(content) : [];
 
   if (role === "typing") {
     return (
@@ -92,6 +122,21 @@ function ChatBubble({ role, content }) {
         </div>
       )}
       <div className="chat-bubble-body">{renderContent(content)}</div>
+      {vulnLinks.length > 0 && (
+        <div className="chat-link-row">
+          {vulnLinks.map((link) => (
+            <a
+              key={link.label}
+              className="chat-link-button"
+              href={link.url}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {link.label} details
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

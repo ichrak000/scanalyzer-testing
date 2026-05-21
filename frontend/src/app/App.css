@@ -954,6 +954,21 @@ body[data-theme="light"] .theme-toggle { background: rgba(26,86,255,0.06); borde
   border: 1px solid rgba(56,189,248,0.15);
   color: var(--text); border-bottom-left-radius: 4px;
 }
+.chat-link-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 10px 0 0;
+}
+.chat-link-button {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 8px 12px; font-family: var(--font-b); font-size: 0.78rem;
+  color: #c7f9ff; background: rgba(56,189,248,0.16);
+  border: 1px solid rgba(56,189,248,0.3); border-radius: 999px;
+  text-decoration: none; transition: all 0.18s;
+}
+.chat-link-button:hover {
+  background: rgba(56,189,248,0.26);
+  border-color: rgba(56,189,248,0.5);
+}
 .chat-ai-label {
   display: flex; align-items: center; gap: 5px; margin-bottom: 5px;
   font-family: var(--font-c); font-size: 0.58rem; letter-spacing: 1.5px;
@@ -1085,4 +1100,4 @@ body[data-theme="light"] .ai-chat-input {
 body[data-theme="light"] .ai-chat-input-row { background: rgba(240,244,255,0.6); border-color: rgba(26,60,140,0.1); }
 body[data-theme="light"] .ai-chat-messages { /* inherits panel bg */ }
 body[data-theme="light"] .chat-code-block pre { background: rgba(230,235,255,0.9); color: #0d3080; }
-body[data-theme="light"] .chat-inline-code { background: rgba(26,86,255,0.07); color: #1a56ff; }
+body[data-theme="light"] .chat-inline-code { background: rgba(26,86,255,0.07); color: #1a56ff; }
