@@ -149,8 +149,7 @@ class AIClient:
         if not is_valid:
             raise ValueError(f"GEMINI_API_KEY format is invalid: {validation_msg}")
         
-        masked_key = mask_sensitive_value(api_key, API_KEY_VISIBLE_CHARS)
-        logger.info(f"Initializing Gemini API client with key: {masked_key}")
+        logger.info("Initializing Gemini API client with configured API key")
         
         # Initialize the Gemini client
         self.client = genai.Client(api_key=api_key)
